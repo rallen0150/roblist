@@ -46,6 +46,7 @@ class Category(models.Model):
 class Item(models.Model):
     user = models.ForeignKey('auth.User')
     name = models.CharField(max_length=300)
+    picture = models.FileField(null=True, blank=True)
     category = models.ForeignKey(Category)
     price = models.FloatField()
     time_added = models.DateTimeField(auto_now_add=True)
@@ -53,3 +54,9 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def image_url(self):
+        if self.picture:
+            return self.picture.url
+        return "https://dhqbrvplips7x.cloudfront.net/webchat/1.0.23/agent-e202505f.png"

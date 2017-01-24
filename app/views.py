@@ -20,7 +20,7 @@ class IndexView(TemplateView):
         context['login'] = AuthenticationForm
         return context
 
-class UserCreateView(CreateView):
+class UserCreateView(FormView):
     template_name = "auth/user_form.html"
     model = User
     form_class = UserCreationForm
@@ -40,4 +40,22 @@ class UserCreateView(CreateView):
 class CategoryCreateView(CreateView):
     model = Category
     fields = ('item_type', )
-    success_url = reverse_lazy('index_view')
+    success_url = reverse_lazy('category_list_view')
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = Category.objects.all()
+        return context
+
+class ItemCreateView(CreateView):
+    model = Item
+    fields = ('name', 'picture', 'category', 'price', 'description')
+    success_url = reverse_lazy('category_list_view')
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        return super().form_valid(form)
