@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <br><br>
+  <a href="{% url 'item_create_view' object.id %}">New Item</a>
+  <br>
+  {% for item in items %}
+    <h3>{{ item }}</h3>
+  {% endfor %}
+{% endblock %}

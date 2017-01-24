@@ -4,7 +4,7 @@
 <br><br>
   {% for x in category %}
     <div>
-      {{ x }}
+      <a href="{% url 'category_detail_view' x.id %}"><h3>{{ x }}</h3></a>
     </div>
   {% endfor %}
 {% endblock %}

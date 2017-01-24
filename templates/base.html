@@ -17,12 +17,10 @@
         <a href="{% url 'user_create_view' %}">New User</a>
       {% else %}
         <a href="{% url 'category_create_view' %}">New Category</a> |
-        <a href="{% url 'category_list_view' %}">Category List</a> |
-        <a href="{% url 'item_create_view' %}">New Item</a> |
+        <a href="{% url 'category_list_view' %}">Category List</a> | 
         <a href="{% url 'logout' %}?next={% url 'index_view' %}"> <i class="power icon"></i> Logout</a> |
       {% endif %}
-    </div>
-    <div class="container" >
+
       {% block content %}
 
       {% endblock %}

@@ -52,10 +52,19 @@ class CategoryListView(ListView):
 
 class ItemCreateView(CreateView):
     model = Item
-    fields = ('name', 'picture', 'category', 'price', 'description')
+    fields = ('name', 'picture', 'price', 'description')
     success_url = reverse_lazy('category_list_view')
 
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.user = self.request.user
+        instance.category = Category.objects.get(id=self.kwargs['pk'])
         return super().form_valid(form)
+
+class CategoryDetailView(DetailView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['items'] = Item.objects.filter(category=self.kwargs['pk'])
+        return context

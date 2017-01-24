@@ -48,7 +48,7 @@ class Item(models.Model):
     name = models.CharField(max_length=300)
     picture = models.FileField(null=True, blank=True)
     category = models.ForeignKey(Category)
-    price = models.FloatField()
+    price = models.FloatField(null=True, blank=True)
     time_added = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
 
