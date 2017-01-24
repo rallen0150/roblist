@@ -36,3 +36,8 @@ class UserCreateView(CreateView):
       user = authenticate(username=username, password=password)
       login(self.request, user)
       return super(UserCreateView, self).form_valid(form)
+
+class CategoryCreateView(CreateView):
+    model = Category
+    fields = ('item_type', )
+    success_url = reverse_lazy('index_view')

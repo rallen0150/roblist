@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if request.user.is_authenticated %}
+    <form class="" action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" name="" value="New Category">
+    </form>
+  {% else %}
+    <h2>Can't do that!</h2>
+  {% endif %}
+{% endblock %}
