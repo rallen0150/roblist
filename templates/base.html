@@ -16,7 +16,9 @@
         <a href="{% url 'login' %}"> <i class="user icon"></i> Login</a> |
         <a href="{% url 'user_create_view' %}">New User</a>
       {% else %}
-        <a href="{% url 'category_list_view' %}">Home</a> | 
+        <a href="{% url 'category_list_view' %}">Home</a> |
+        <a href="{% url 'profile_update_view' %}">Update Profile</a> |
+        <a href="{% url 'profile_detail_view' request.user.id %}">Profile</a> | 
         <a href="{% url 'category_create_view' %}">New Category</a> |
         <a href="{% url 'logout' %}?next={% url 'index_view' %}"> <i class="power icon"></i> Logout</a> |
       {% endif %}

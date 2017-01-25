@@ -1,8 +1,13 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 from app.views import IndexView, UserCreateView, CategoryCreateView, CategoryListView, \
-                      ItemCreateView, CategoryDetailView, ItemDetailView#, ProfileUpdateView
+                      ItemCreateView, CategoryDetailView, ItemDetailView, ProfileUpdateView, \
+                      ProfileDetailView
 
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -18,5 +23,6 @@ urlpatterns = [
     url(r'^category/(?P<pk>\d+)/new_item/$', ItemCreateView.as_view(), name='item_create_view'),
     url(r'^category/(?P<pk>\d+)/$', CategoryDetailView.as_view(), name='category_detail_view'),
     url(r'^item/(?P<pk>\d+)/$', ItemDetailView.as_view(), name='item_detail_view'),
-    # url(r'^account/profile/$', ProfileUpdateView.as_view(), name='profile_update_view'),
-]
+    url(r'^account/profile/$', ProfileUpdateView.as_view(), name='profile_update_view'),
+    url(r'^account/profile/(?P<pk>\d+)/$', ProfileDetailView.as_view(), name='profile_detail_view'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

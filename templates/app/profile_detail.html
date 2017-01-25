@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ details }}</h1>
+  <h1>{{ details.first_name }} {{ details.last_name }}</h1>
+  {{ details.email }}
+{% endblock %}

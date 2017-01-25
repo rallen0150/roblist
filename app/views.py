@@ -77,12 +77,23 @@ class ItemDetailView(DetailView):
         context['item'] = Item.objects.get(id=self.kwargs['pk'])
         return context
 
-# class ProfileUpdateView(UpdateView):
-#     model = Profile
-#     fields = ('first_name', 'last_name', 'email', 'image')
-#     success_url = reverse_lazy('category_list_view')
-#
-#     def form_valid(self, form):
-#         instance = form.save(commit=False)
-#         instance.user = self.request.user
-#         return super().form_valid(form)
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    fields = ('first_name', 'last_name', 'email', 'image')
+    success_url = reverse_lazy('category_list_view')
+
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        return super().form_valid(form)
+
+class ProfileDetailView(DetailView):
+    model = Profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['details'] = Profile.objects.get(id=self.kwargs['pk'])
+        return context
