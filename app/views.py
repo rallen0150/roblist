@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login
 
 from django.views.generic import TemplateView, DetailView, ListView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.urls import reverse_lazy
 
 from app.models import Profile, Category, Item
@@ -24,7 +24,7 @@ class UserCreateView(FormView):
     template_name = "auth/user_form.html"
     model = User
     form_class = UserCreationForm
-    success_url = reverse_lazy('index_view')
+    success_url = reverse_lazy('profile_update_view')
 
     def form_valid(self, form):
       #save the new user first
@@ -68,3 +68,21 @@ class CategoryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['items'] = Item.objects.filter(category=self.kwargs['pk'])
         return context
+
+class ItemDetailView(DetailView):
+    model = Item
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item'] = Item.objects.get(id=self.kwargs['pk'])
+        return context
+
+# class ProfileUpdateView(UpdateView):
+#     model = Profile
+#     fields = ('first_name', 'last_name', 'email', 'image')
+#     success_url = reverse_lazy('category_list_view')
+#
+#     def form_valid(self, form):
+#         instance = form.save(commit=False)
+#         instance.user = self.request.user
+#         return super().form_valid(form)

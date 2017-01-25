@@ -59,4 +59,4 @@ class Item(models.Model):
     def image_url(self):
         if self.picture:
             return self.picture.url
-        return "https://dhqbrvplips7x.cloudfront.net/webchat/1.0.23/agent-e202505f.png"
+        return "http://www.coveryourhair.com/components/com_virtuemart/shop_image/product/resized/Surprise_Berets_4d5d6a4bd11b9_375x50(RF1401741635).jpg"
