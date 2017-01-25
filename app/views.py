@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.urls import reverse_lazy
 
-from app.models import Profile, Category, Item
+from app.models import Profile, Category, Item, Comment, Reply
 
 # Create your views here.
 
@@ -97,3 +97,11 @@ class ProfileDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['details'] = Profile.objects.get(id=self.kwargs['pk'])
         return context
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ('comment',)
+
+    def get_success_url(self, *args, **kwargs):
+        x = Comment.objects.get(id=self.kwargs['pk']).truck_comment.id
+        return reverse('item_detail_view', args=[x])

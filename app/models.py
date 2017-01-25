@@ -55,8 +55,29 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
+    def get_comment(self):
+        return Comment.objects.filter(item_commented=self)
+
     @property
     def image_url(self):
         if self.picture:
             return self.picture.url
         return "http://www.coveryourhair.com/components/com_virtuemart/shop_image/product/resized/Surprise_Berets_4d5d6a4bd11b9_375x50(RF1401741635).jpg"
+
+class Comment(models.Model):
+    user = models.ForeignKey('auth.User')
+    comment = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    item_commented = models.ForeignKey('app.Item')
+
+    def __str__(self):
+        return self.comment
+
+    def get_reply(self):
+        return Reply.objects.filter(comment=self)
+
+class Reply(models.Model):
+    user = models.ForeignKey('auth.User')
+    reply = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    comment = models.ForeignKey('app.Comment')
