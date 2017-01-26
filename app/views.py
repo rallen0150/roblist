@@ -100,8 +100,27 @@ class ProfileDetailView(DetailView):
 
 class CommentCreateView(CreateView):
     model = Comment
-    fields = ('comment',)
+    fields = ('comment', )
 
-    def get_success_url(self, *args, **kwargs):
-        x = Comment.objects.get(id=self.kwargs['pk']).truck_comment.id
-        return reverse('item_detail_view', args=[x])
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('item_detail_view', args=[int(self.kwargs['pk'])])
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        instance.item_commented = Item.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)
+
+class ReplyCreateView(CreateView):
+    model = Reply
+    fields = ('reply', )
+
+    def get_success_url(self, **kwargs):
+        x = Comment.objects.get(id=self.kwargs['pk']).item_commented.id
+        return reverse_lazy('item_detail_view', args=[x])
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        instance.comment = Comment.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)

@@ -17,4 +17,25 @@
     <b><i>By: {{ item.user }}</i></b><br>
     <b><i>Posted On: {{ item.time_added }}</i></b>
   </div>
+  <br><br>
+  <a href="{% url 'comment_create_view' item.id %}">Comment</a>
+  {% for comment in item.get_comment %}
+    <div>
+      <h3>{{ comment.comment }}</h3>
+      <a href="{% url 'reply_create_view' comment.id %}">Reply</a>
+      <blockquote>
+        Commenter: {{ comment.user }} <br>
+        Time: {{ comment.time }}
+        {% for reply in comment.get_reply %}
+          <blockquote>
+            <h3>{{ reply.reply }}</h3>
+            <blockquote>
+              By: {{ reply.user }}<br>
+              Time: {{ reply.time }}
+            </blockquote>
+          </blockquote>
+        {% endfor %}
+      </blockquote>
+    </div>
+  {% endfor %}
 {% endblock %}

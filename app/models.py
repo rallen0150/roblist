@@ -81,3 +81,6 @@ class Reply(models.Model):
     reply = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey('app.Comment')
+
+    def __str__(self):
+        return self.reply
