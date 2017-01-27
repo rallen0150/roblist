@@ -8,10 +8,8 @@
       <img src="{{ MEDIA_URL}}{{ item.image_url }}" class='rounded mx-auto d-block' alt="Picture of {{ item.name }}" /> <br>
       <p>
         {{ item.description }} <br>
-        {% if item.price == 'True' %}
-          ${{ item.price }}
-        {% else %}
-          There is no price
+        {% if item.price %}
+          ${{ item.price|floatformat:2 }}
         {% endif %}
       </p>
       <hr>
@@ -30,21 +28,21 @@
     </div>
     {% for comment in item.get_comment %}
       <div class="col-md-6 col-md-offset-6">
-        <h3>{{ comment.comment }}</h3>
-        
-        <a href="{% url 'reply_create_view' comment.id %}">Reply</a>
-        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#reply">Reply</button>
-        <div id="reply" class="collapse">
-          <form class="" action="{% url 'reply_create_view' comment.id %}" method="post">
-            {% csrf_token %}
-            <textarea name="reply" rows="3" cols="15"></textarea>
-            <input type="submit" name="" value="Reply!">
-          </form>
-        </div>
-
+        <h1>{{ comment.comment }}</h1>
         <blockquote>
           Commenter: {{ comment.user }} <br>
           Time: {{ comment.time }}
+        </blockquote>
+        <button class="accordion">Reply</button>
+        <div class="panel">
+          <p>
+            <form class="" action="{% url 'reply_create_view' comment.id %}" method="post">
+              {% csrf_token %}
+              <textarea name="reply" rows="4" cols="35"></textarea>
+              <input type="submit" name="" value="Reply!">
+            </form>
+          </p>
+        </div>
           {% for reply in comment.get_reply %}
             <blockquote>
               <h3>{{ reply.reply }}</h3>
@@ -54,8 +52,24 @@
               </blockquote>
             </blockquote>
           {% endfor %}
-        </blockquote>
       </div>
     </div>
+
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight){
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        }
+      }
+      </script>
   {% endfor %}
 {% endblock %}
