@@ -2,40 +2,50 @@
 
 {% block content %}
 <br><br>
-  <div class="">
-    <h1>{{ item }}</h1>
-    <img src="{{ MEDIA_URL}}{{ item.image_url }}" class='rounded mx-auto d-block' alt="Picture of {{ item.name }}" /> <br>
-    <blockquote>
-      {{ item.description }} <br>
-      {% if item.price == 'True' %}
-        ${{ item.price }}
-      {% else %}
-        There is no price
-      {% endif %}
-    </blockquote>
-    <hr>
-    <b><i>By: {{ item.user }}</i></b><br>
-    <b><i>Posted On: {{ item.time_added }}</i></b>
-  </div>
-  <br><br>
-  <a href="{% url 'comment_create_view' item.id %}">Comment</a>
-  {% for comment in item.get_comment %}
-    <div>
-      <h3>{{ comment.comment }}</h3>
-      <a href="{% url 'reply_create_view' comment.id %}">Reply</a>
-      <blockquote>
-        Commenter: {{ comment.user }} <br>
-        Time: {{ comment.time }}
-        {% for reply in comment.get_reply %}
-          <blockquote>
-            <h3>{{ reply.reply }}</h3>
+  <div class="row">
+    <div class="col-md-6">
+      <h1>{{ item }}</h1>
+      <img src="{{ MEDIA_URL}}{{ item.image_url }}" class='rounded mx-auto d-block' alt="Picture of {{ item.name }}" /> <br>
+      <p>
+        {{ item.description }} <br>
+        {% if item.price == 'True' %}
+          ${{ item.price }}
+        {% else %}
+          There is no price
+        {% endif %}
+      </p>
+      <hr>
+      <b><i>By: {{ item.user }}</i></b><br>
+      <b><i>Posted On: {{ item.time_added }}</i></b>
+    </div>
+    <div class="col-md-6 ">
+      {% comment %}
+      <a href="{% url 'comment_create_view' item.id %}">Comment</a>
+      {% endcomment %}
+      <form class="" action="{% url 'comment_create_view' item.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="comment" rows="20" cols="65"></textarea>
+        <input type="submit" name="" value="Comment!">
+      </form>
+    </div>
+    {% for comment in item.get_comment %}
+      <div class="col-md-6 col-md-offset-6">
+        <h3>{{ comment.comment }}</h3>
+        <a href="{% url 'reply_create_view' comment.id %}">Reply</a>
+        <blockquote>
+          Commenter: {{ comment.user }} <br>
+          Time: {{ comment.time }}
+          {% for reply in comment.get_reply %}
             <blockquote>
-              By: {{ reply.user }}<br>
-              Time: {{ reply.time }}
+              <h3>{{ reply.reply }}</h3>
+              <blockquote>
+                Reply By: {{ reply.user }}<br>
+                Time: {{ reply.time }}
+              </blockquote>
             </blockquote>
-          </blockquote>
-        {% endfor %}
-      </blockquote>
+          {% endfor %}
+        </blockquote>
+      </div>
     </div>
   {% endfor %}
 {% endblock %}
