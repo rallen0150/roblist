@@ -9,6 +9,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style media="screen">
+      img {
+          height: 350px;
+          width: 370px;
+        }
+    </style>
+
   </head>
   <body>
     <div class="container">
@@ -18,7 +26,7 @@
       {% else %}
         <a href="{% url 'category_list_view' %}">Home</a> |
         <a href="{% url 'profile_update_view' %}">Update Profile</a> |
-        <a href="{% url 'profile_detail_view' request.user.id %}">Profile</a> | 
+        <a href="{% url 'profile_detail_view' request.user.id %}">Profile</a> |
         <a href="{% url 'category_create_view' %}">New Category</a> |
         <a href="{% url 'logout' %}?next={% url 'index_view' %}"> <i class="power icon"></i> Logout</a> |
       {% endif %}
