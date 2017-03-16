@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <h1>If you have any questions or concerns, PLEASE let me know!</h1>
+
+    <form class="" action="{% url 'send_mail' %}" method="post">
+      {% csrf_token %}
+      {{ form.sender|attr:"placeholder:Enter Your Email"|attr:"type:email" }} <br><br>
+      {{ form.message|add_class:"materialize-textarea"|attr:"placeholder:What is your Question/Concern?" }} <br>
+      <input id=btnShow class="btn btn-success btn-lg" type="submit" value="Submit">
+    </form>
+{% endblock %}

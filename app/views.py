@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login
 
 from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
+from app.forms import ContactForm
+
 from django.urls import reverse_lazy
 
 from app.models import Profile, Category, Item, Comment, Reply
@@ -123,4 +125,21 @@ class ReplyCreateView(CreateView):
         instance = form.save(commit=False)
         instance.user = self.request.user
         instance.comment = Comment.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)
+
+class ContactView(TemplateView):
+    template_name = 'contact_me.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['form'] = ContactForm()
+        return context
+
+class SendMailView(FormView):
+    template_name = 'contact_me.html'
+    success_url = reverse_lazy("contact_view")
+    form_class = ContactForm
+
+    def form_valid(self, form):
+        form.send_email()
         return super().form_valid(form)
