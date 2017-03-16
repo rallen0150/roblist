@@ -8,6 +8,16 @@
       {% csrf_token %}
       {{ form.sender|attr:"placeholder:Enter Your Email"|attr:"type:email" }} <br><br>
       {{ form.message|add_class:"materialize-textarea"|attr:"placeholder:What is your Question/Concern?" }} <br>
-      <input id=btnShow class="btn btn-success btn-lg" type="submit" value="Submit">
+      <button type="submit" class="btn btn-success btn-lg" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending Message">Submit</button>
     </form>
+
+    <script>
+    $('.btn').on('click', function() {
+      var $this = $(this);
+    $this.button('loading');
+    //   setTimeout(function() {
+    //      $this.button('reset');
+    //  }, 5000);
+    });
+    </script>
 {% endblock %}
