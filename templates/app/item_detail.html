@@ -17,9 +17,7 @@
       <b><i>Posted On: {{ item.time_added }}</i></b>
     </div>
     <div class="col-md-6 ">
-      {% comment %}
-      <a href="{% url 'comment_create_view' item.id %}">Comment</a>
-      {% endcomment %}
+      <br><br>
       <form class="" action="{% url 'comment_create_view' item.id %}" method="post">
         {% csrf_token %}
         <textarea name="comment" rows="20" cols="65"></textarea>

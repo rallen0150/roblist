@@ -143,3 +143,17 @@ class SendMailView(FormView):
     def form_valid(self, form):
         form.send_email()
         return super().form_valid(form)
+
+class ReplyUpdateView(UpdateView):
+    model = Reply
+    fields = ('reply', )
+
+    def get_success_url(self, **kwargs):
+        x = Comment.objects.get(id=self.kwargs['pk']).item_commented.id
+        return reverse_lazy('item_detail_view', args=[x])
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        instance.comment = Comment.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)
