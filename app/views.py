@@ -113,6 +113,14 @@ class CommentCreateView(CreateView):
         instance.item_commented = Item.objects.get(id=self.kwargs['pk'])
         return super().form_valid(form)
 
+class CommentUpdateView(UpdateView):
+    model = Comment
+    fields = ('comment', )
+
+    def get_success_url(self, **kwargs):
+        x = Comment.objects.get(id=self.kwargs['pk']).item_commented.id
+        return reverse_lazy('item_detail_view', args=[x])
+
 class ReplyCreateView(CreateView):
     model = Reply
     fields = ('reply', )
@@ -126,6 +134,14 @@ class ReplyCreateView(CreateView):
         instance.user = self.request.user
         instance.comment = Comment.objects.get(id=self.kwargs['pk'])
         return super().form_valid(form)
+
+class ReplyUpdateView(UpdateView):
+    model = Reply
+    fields = ('reply', )
+
+    def get_success_url(self, **kwargs):
+        x = Reply.objects.get(id=self.kwargs['pk']).comment.item_commented.id
+        return reverse_lazy('item_detail_view', args=[x])
 
 class ContactView(TemplateView):
     template_name = 'contact_me.html'
@@ -142,18 +158,4 @@ class SendMailView(FormView):
 
     def form_valid(self, form):
         form.send_email()
-        return super().form_valid(form)
-
-class ReplyUpdateView(UpdateView):
-    model = Reply
-    fields = ('reply', )
-
-    def get_success_url(self, **kwargs):
-        x = Comment.objects.get(id=self.kwargs['pk']).item_commented.id
-        return reverse_lazy('item_detail_view', args=[x])
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.user = self.request.user
-        instance.comment = Comment.objects.get(id=self.kwargs['pk'])
         return super().form_valid(form)

@@ -8,7 +8,7 @@ from django.conf import settings
 from app.views import IndexView, UserCreateView, CategoryCreateView, CategoryListView, \
                       ItemCreateView, CategoryDetailView, ItemDetailView, ProfileUpdateView, \
                       ProfileDetailView, CommentCreateView, ReplyCreateView, ContactView, \
-                      SendMailView, ReplyUpdateView
+                      SendMailView, ReplyUpdateView, CommentUpdateView
 
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^account/profile/$', ProfileUpdateView.as_view(), name='profile_update_view'),
     url(r'^account/profile/(?P<pk>\d+)/$', ProfileDetailView.as_view(), name='profile_detail_view'),
     url(r'^item/(?P<pk>\d+)/comment/$', CommentCreateView.as_view(), name='comment_create_view'),
+    url(r'^item/(?P<pk>\d+)/update/$', CommentUpdateView.as_view(), name='comment_update_view'),
     url(r'^comment/(?P<pk>\d+)/reply/$', ReplyCreateView.as_view(), name='reply_create_view'),
     url(r'^reply/(?P<pk>\d+)/update/$', ReplyUpdateView.as_view(), name='reply_update_view'),
     url(r'^contact/$', ContactView.as_view(), name='contact_view'),
