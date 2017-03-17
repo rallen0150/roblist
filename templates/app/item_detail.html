@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 
+{% block css %}
+  <style media="screen">
+    #price {
+      font-size: 20px;
+    }
+    #comment {
+      font-size: 32px;
+    }
+    #reply {
+      font-size: 24px;
+    }
+    #user {
+      font-size: 14px;
+    }
+    #time {
+      font-size: 14px;
+    }
+    #avatar {
+      max-height: 55px;
+      max-width: 55px;
+    }
+    #posted {
+      font-size: 24px;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
 <br><br>
   <div class="row">
@@ -9,12 +36,12 @@
       <p>
         {{ item.description }} <br>
         {% if item.price %}
-          ${{ item.price|floatformat:2 }}
+          <strong id="price">Looking for <i><u>${{ item.price|floatformat:2 }}</u></i></strong>
         {% endif %}
       </p>
       <hr>
-      <b><i>By: {{ item.user }}</i></b><br>
-      <b><i>Posted On: {{ item.time_added }}</i></b>
+      <b><i id="posted">By: <a href="{% url 'profile_detail_view' item.user.id %}">{{ item.user }}</a></i></b><br>
+      <b><i id="posted">Posted On: {{ item.time_added }}</i></b>
     </div>
     <div class="col-md-6 ">
       <br><br>
@@ -23,17 +50,18 @@
         <textarea name="comment" rows="20" cols="65"></textarea>
         <input type="submit" name="" value="Comment!">
       </form>
+      <br>
     </div>
     {% for comment in item.get_comment %}
       <div class="col-md-6 col-md-offset-6">
-        <h1>{{ comment.comment }}</h1>
+        <a href="{% url 'profile_detail_view' comment.user.id %}"><img id="avatar" src="{{ MEDIA_URL}}{{ comment.user.profile.image_url }}" class="img-circle" alt=""></a>
+        <a id="user" href="{% url 'profile_detail_view' comment.user.id %}">{{ comment.user }}</a> |
+        <i id="time">{{ comment.time }}</i>
+        <br>
+        <strong id="comment">{{ comment.comment }}</strong>
         {% if request.user == comment.user %}
           <a href="{% url 'comment_update_view' comment.id %}">Update</a>
-        {% endif %}
-        <blockquote>
-          Commenter: {{ comment.user }} <br>
-          Time: {{ comment.time }}
-        </blockquote>
+        {% endif %}<br><br>
         <button class="accordion">Reply</button>
         <div class="panel">
           <p>
@@ -46,14 +74,13 @@
         </div>
           {% for reply in comment.get_reply %}
             <blockquote>
-              <h3>{{ reply.reply }}</h3>
+              <a href="{% url 'profile_detail_view' comment.user.id %}"><img id="avatar" src="{{ MEDIA_URL}}{{ comment.user.profile.image_url }}" class="img-circle" alt=""></a>
+              <a id="user" href="{% url 'profile_detail_view' reply.user.id %}">{{ reply.user }}</a> |
+              <i id="time">{{ reply.time }}</i> <br>
+              <strong id="reply">{{ reply.reply }}</strong>
               {% if request.user == reply.user %}
                 <a href="{% url 'reply_update_view' reply.id %}">Update</a>
               {% endif %}
-              <blockquote>
-                Reply By: {{ reply.user }}<br>
-                Time: {{ reply.time }}
-              </blockquote>
             </blockquote>
           {% endfor %}
       </div>

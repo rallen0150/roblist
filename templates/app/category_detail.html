@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 
+{% block css %}
+  <style media="screen">
+    #object {
+      font-size: 28px;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
   <br><br>
   <a href="{% url 'item_create_view' object.id %}">New Item</a>
-  <br>
+  <br><br>
   {% for item in items %}
-    <a href="{% url 'item_detail_view' item.id %}"><h3>{{ item }}</h3></a>
+    <a href="{% url 'item_detail_view' item.id %}"><img src="{{ MEDIA_URL}}{{ item.image_url }}" class="img-thumbnail" width="155" height="155"> <strong id="object">{{ item }}</strong></a> <br><br>
   {% endfor %}
 {% endblock %}
