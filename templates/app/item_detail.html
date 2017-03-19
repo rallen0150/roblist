@@ -14,6 +14,9 @@
     #user {
       font-size: 14px;
     }
+    #update {
+      font-size: 14px;
+    }
     #time {
       font-size: 14px;
     }
@@ -24,6 +27,40 @@
     #posted {
       font-size: 24px;
     }
+    button.accordion {
+      background-color: #87CEEB;
+      cursor: pointer;
+      padding: 8.5px;
+      width: 100px;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+      transition: 0.5s;
+    }
+
+    button.accordion.active, button.accordion:hover {
+        background-color: #87CEEB;
+    }
+
+    button.accordion:after {
+        content: '\002B';
+        font-weight: bold;
+        float: right;
+        margin-left: 5px;
+    }
+
+    button.accordion.active:after {
+        content: "\2212";
+    }
+
+    div.panel {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+    }
   </style>
 {% endblock %}
 
@@ -32,15 +69,17 @@
   <div class="row">
     <div class="col-md-6">
       <h1>{{ item }}</h1>
-      <img src="{{ MEDIA_URL}}{{ item.image_url }}" class='rounded mx-auto d-block' alt="Picture of {{ item.name }}" /> <br>
+      <img src="{{ MEDIA_URL}}{{ item.image_url }}" class='img-rounded' alt="Picture of {{ item.name }}" /> <br>
       <p>
-        {{ item.description }} <br>
-        {% if item.price %}
-          <strong id="price">Looking for <i><u>${{ item.price|floatformat:2 }}</u></i></strong>
-        {% endif %}
+        <blockquote>
+          {{ item.description }} <br>
+          {% if item.price %}
+            <strong id="price">Looking for <i><u>${{ item.price|floatformat:2 }}</u></i></strong>
+          {% endif %}
+        </blockquote>
       </p>
       <hr>
-      <b><i id="posted">By: <a href="{% url 'profile_detail_view' item.user.id %}">{{ item.user }}</a></i></b><br>
+      <b><i id="posted">Posted By: <a href="{% url 'profile_detail_view' item.user.id %}">{{ item.user }}</a></i></b><br>
       <b><i id="posted">Posted On: {{ item.time_added }}</i></b>
     </div>
     <div class="col-md-6 ">
@@ -48,7 +87,7 @@
       <form class="" action="{% url 'comment_create_view' item.id %}" method="post">
         {% csrf_token %}
         <textarea name="comment" rows="20" cols="65"></textarea>
-        <input type="submit" name="" value="Comment!">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-comment"></i> Comment!</button>
       </form>
       <br>
     </div>
@@ -60,15 +99,15 @@
         <br>
         <strong id="comment">{{ comment.comment }}</strong>
         {% if request.user == comment.user %}
-          <a href="{% url 'comment_update_view' comment.id %}">Update</a>
+          <a id="update" href="{% url 'comment_update_view' comment.id %}"><i class="fa fa-pencil-square-o"></i> Update</a>
         {% endif %}<br><br>
-        <button class="accordion">Reply</button>
+        <button class="accordion"><i class="fa fa-reply"></i> Reply</button>
         <div class="panel">
           <p>
             <form class="" action="{% url 'reply_create_view' comment.id %}" method="post">
               {% csrf_token %}
               <textarea name="reply" rows="4" cols="35"></textarea>
-              <input type="submit" name="" value="Reply!">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Reply</button>
             </form>
           </p>
         </div>
@@ -79,7 +118,7 @@
               <i id="time">{{ reply.time }}</i> <br>
               <strong id="reply">{{ reply.reply }}</strong>
               {% if request.user == reply.user %}
-                <a href="{% url 'reply_update_view' reply.id %}">Update</a>
+                <a id="update" href="{% url 'reply_update_view' reply.id %}"><i class="fa fa-pencil-square-o"></i> Update</a>
               {% endif %}
             </blockquote>
           {% endfor %}
