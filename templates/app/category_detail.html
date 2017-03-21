@@ -9,9 +9,14 @@
 {% endblock %}
 
 {% block content %}
-  <a href="{% url 'item_create_view' object.id %}">New Item</a>
+  <a href="{% url 'item_create_view' object.id %}"><i class="fa fa-plus-circle"></i> New Item</a>
   <br><br>
-  {% for item in items %}
-    <a href="{% url 'item_detail_view' item.id %}"><img src="{{ MEDIA_URL}}{{ item.image_url }}" class="img-thumbnail" width="155" height="155"> <strong id="object">{{ item }}</strong></a> <br><br>
-  {% endfor %}
+  <div class="row">
+    <div class="col-md-6">
+      {% for item in items %}
+        <a href="{% url 'item_detail_view' item.id %}"><img src="{{ MEDIA_URL}}{{ item.image_url }}" class="img-thumbnail" width="155" height="155"> <strong id="object">{{ item }}</strong></a>
+        <br><br>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}

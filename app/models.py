@@ -42,6 +42,11 @@ class Category(models.Model):
     def __str__(self):
         return self.item_type
 
+    @property
+    def get_count(self):
+        return Item.objects.filter(category=self).count()
+
+
 class Item(models.Model):
     user = models.ForeignKey('auth.User')
     name = models.CharField(max_length=300)

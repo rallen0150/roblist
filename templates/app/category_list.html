@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
 
+{% block css %}
+  <style media="screen">
+    strong {
+      font-size: 26px;
+    }
+    button {
+      float: right;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
-  {% for x in category %}
-    <div>
-      <a href="{% url 'category_detail_view' x.id %}"><h3>{{ x }}</h3></a>
+    <div class="row">
+      {% for x in category %}
+      <div class="col-md-4">
+        <strong><a href="{% url 'category_detail_view' x.id %}">{{ x }}</a></strong>
+        <button class="btn btn-primary btn-sm">Item Count: <span class="badge">{{ x.get_count }}</span></button>
+        <hr>
+      </div>
+      {% endfor %}
     </div>
-  {% endfor %}
 {% endblock %}
