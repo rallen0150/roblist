@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br><br>
   {% for x in category %}
     <div>
       <a href="{% url 'category_detail_view' x.id %}"><h3>{{ x }}</h3></a>

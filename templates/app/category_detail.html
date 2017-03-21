@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-  <br><br>
   <a href="{% url 'item_create_view' object.id %}">New Item</a>
   <br><br>
   {% for item in items %}

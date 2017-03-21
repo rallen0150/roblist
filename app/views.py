@@ -153,7 +153,7 @@ class ContactView(TemplateView):
 
 class SendMailView(FormView):
     template_name = 'contact_me.html'
-    success_url = reverse_lazy("contact_view")
+    success_url = reverse_lazy("category_list_view")
     form_class = ContactForm
 
     def form_valid(self, form):
