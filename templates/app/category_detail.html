@@ -5,14 +5,17 @@
     #object {
       font-size: 28px;
     }
+    a.new-item {
+      color: white;
+    }
   </style>
 {% endblock %}
 
 {% block content %}
-  <a href="{% url 'item_create_view' object.id %}"><i class="fa fa-plus-circle"></i> New Item</a>
+  <a class="new-item" href="{% url 'item_create_view' object.id %}"><button type="button" class="btn btn-primary"><i class="fa fa-plus-circle"></i> New Item</button></a>
   <br><br>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-10">
       {% for item in items %}
         <a href="{% url 'item_detail_view' item.id %}"><img src="{{ MEDIA_URL}}{{ item.image_url }}" class="img-thumbnail" width="155" height="155"> <strong id="object">{{ item }}</strong></a>
         <br><br>

@@ -27,13 +27,14 @@
     #posted {
       font-size: 24px;
     }
+
     button.accordion {
       background-color: #87CEEB;
       cursor: pointer;
       padding: 8.5px;
       width: 100px;
       border: none;
-      text-align: left;
+      text-align: center;
       outline: none;
       font-size: 15px;
       transition: 0.5s;
@@ -56,10 +57,37 @@
 
     div.panel {
         padding: 0 18px;
-        background-color: white;
+        background-color: #dcdcdc;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.2s ease-out;
+    }
+
+    button.accordion-update {
+      background-color: #dcdcdc;
+      color: blue;
+      cursor: pointer;
+      width: 100px;
+      border: none;
+      text-align: center;
+      outline: none;
+      font-size: 15px;
+      transition: 0.5s;
+    }
+
+    button.accordion-update.active, button.accordion:hover {
+        background-color: #dcdcdc;
+    }
+
+    button.accordion-update:after {
+        content: '\002B';
+        font-weight: bold;
+        float: right;
+        margin-left: 5px;
+    }
+
+    button.accordion-update.active:after {
+        content: "\2212";
     }
   </style>
 {% endblock %}
@@ -98,8 +126,17 @@
         <br>
         <strong id="comment">{{ comment.comment }}</strong>
         {% if request.user == comment.user %}
-          <a id="update" href="{% url 'comment_update_view' comment.id %}"><i class="fa fa-pencil-square-o"></i> Update</a>
-        {% endif %}<br><br>
+          <button class="accordion-update"><i class="fa fa-pencil-square-o"></i> Update</button>
+          <div class="panel">
+            <p>
+              <form class="" action="{% url 'comment_update_view' comment.id %}" method="post">
+                {% csrf_token %}
+                <textarea name="comment" rows="4" cols="35"></textarea>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i> Update</button>
+              </form>
+            </p>
+          </div>
+        {% endif %}
         <button class="accordion"><i class="fa fa-reply"></i> Reply</button>
         <div class="panel">
           <p>
@@ -117,7 +154,16 @@
               <i id="time">{{ reply.time }}</i> <br>
               <strong id="reply">{{ reply.reply }}</strong>
               {% if request.user == reply.user %}
-                <a id="update" href="{% url 'reply_update_view' reply.id %}"><i class="fa fa-pencil-square-o"></i> Update</a>
+                <button class="accordion-update"><i class="fa fa-pencil-square-o"></i> Update</button>
+                <div class="panel">
+                  <p>
+                    <form class="" action="{% url 'reply_update_view' reply.id %}" method="post">
+                      {% csrf_token %}
+                      <textarea name="reply" rows="4" cols="35"></textarea>
+                      <button type="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i> Update</button>
+                    </form>
+                  </p>
+                </div>
               {% endif %}
             </blockquote>
           {% endfor %}
@@ -125,7 +171,23 @@
     </div>
 
     <script>
+      //Accordion down for reply
       var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight){
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        }
+      }
+      //For the Update
+      var acc = document.getElementsByClassName("accordion-update");
       var i;
 
       for (i = 0; i < acc.length; i++) {

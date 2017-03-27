@@ -5,7 +5,7 @@
     <form class="" action="" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" name="" value="New Category">
+      <button type="submit" class="btn btn-primary">New Category</button>
     </form>
   {% else %}
     <h2>Can't do that!</h2>

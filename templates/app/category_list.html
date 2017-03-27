@@ -8,6 +8,9 @@
     button {
       float: right;
     }
+    div.well {
+      padding: 25px;
+    }
   </style>
 {% endblock %}
 
@@ -15,9 +18,10 @@
     <div class="row">
       {% for x in category %}
       <div class="col-md-4">
-        <strong><a href="{% url 'category_detail_view' x.id %}">{{ x }}</a></strong>
-        <button class="btn btn-primary btn-sm">Item Count: <span class="badge">{{ x.get_count }}</span></button>
-        <hr>
+        <div class="well well-sm">
+          <strong><a href="{% url 'category_detail_view' x.id %}">{{ x }}</a></strong>
+          <button class="btn btn-primary btn-sm">Item Count: <span class="badge">{{ x.get_count }}</span></button>
+        </div>
       </div>
       {% endfor %}
     </div>
